@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.instagram_clone">
+    <!-- change com.example when deploying to any platform -->
    <application
         android:label="instagram_clone"
         android:name="${applicationName}"
