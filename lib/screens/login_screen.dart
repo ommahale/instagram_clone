@@ -27,75 +27,77 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //instagram logo svg
-              SvgPicture.asset(
-                'assets/logo.svg',
-                color: primaryColor,
-                height: 64,
-              ),
-              const SizedBox(
-                height: 64,
-              )
-              //text area username
-              ,
-              CustomTextField(
-                  iconData: Icons.mail,
-                  hintText: 'Enter your email id',
-                  isPass: false,
-                  textEditingController: _emailController,
-                  textInputType: TextInputType.emailAddress),
-              const SizedBox(
-                height: 20,
-              ),
-              //text area password
-              CustomTextField(
-                  iconData: Icons.lock,
-                  hintText: 'Enter your password',
-                  isPass: true,
-                  textEditingController: _passwordController,
-                  textInputType: TextInputType.text),
-              const SizedBox(
-                height: 20,
-              ),
-              //button login
-              ElevatedButton(
-                onPressed: () {},
-                child: Row(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                //instagram logo svg
+                SvgPicture.asset(
+                  'assets/logo.svg',
+                  color: primaryColor,
+                  height: 64,
+                ),
+                const SizedBox(
+                  height: 64,
+                )
+                //text area username
+                ,
+                CustomTextField(
+                    iconData: Icons.mail,
+                    hintText: 'Enter your email id',
+                    isPass: false,
+                    textEditingController: _emailController,
+                    textInputType: TextInputType.emailAddress),
+                const SizedBox(
+                  height: 20,
+                ),
+                //text area password
+                CustomTextField(
+                    iconData: Icons.lock,
+                    hintText: 'Enter your password',
+                    isPass: true,
+                    textEditingController: _passwordController,
+                    textInputType: TextInputType.text),
+                const SizedBox(
+                  height: 20,
+                ),
+                //button login
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Log in',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      Icon(Icons.arrow_forward)
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Log in',
+                  children: [
+                    const Text(
+                      "Don't have an account?",
                       style: TextStyle(fontSize: 18),
                     ),
-                    Icon(Icons.arrow_forward)
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Sign up',
+                        style: TextStyle(fontSize: 19, color: Colors.white),
+                      ),
+                    )
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Don't have an account?",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Sign up',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  )
-                ],
-              ),
-              //signup
-            ],
+                //signup
+              ],
+            ),
           ),
         ),
       )),
