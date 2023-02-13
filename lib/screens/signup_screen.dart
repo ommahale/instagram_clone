@@ -20,6 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -35,6 +36,24 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _image = image;
     });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signupUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        username: _usernameController.text,
+        bio: _bioController.text,
+        profilePic: _image);
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(context, res);
+    }
   }
 
   @override
@@ -126,23 +145,24 @@ class _SignupScreenState extends State<SignupScreen> {
                   height: 20,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    AuthMethods().signupUser(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        username: _usernameController.text,
-                        bio: _bioController.text,
-                        profilePic: _image);
-                  },
+                  onPressed: signUpUser,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Icon(Icons.arrow_forward)
-                    ],
+                    children: _isLoading == false
+                        ? const [
+                            Text(
+                              'Sign Up',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Icon(Icons.arrow_forward)
+                          ]
+                        : const [
+                            Center(
+                              child: CircularProgressIndicator(
+                                color: primaryColor,
+                              ),
+                            )
+                          ],
                   ),
                 ),
               ],

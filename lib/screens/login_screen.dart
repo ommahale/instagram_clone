@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colors.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,11 +15,26 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void logInUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().logInUser(
+        email: _emailController.text, password: _passwordController.text);
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != "success" && mounted) {
+      showSnackBar(context, res);
+    }
   }
 
   @override
@@ -87,11 +104,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 18),
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Sign up',
-                        style: TextStyle(fontSize: 19, color: Colors.white),
-                      ),
+                      onPressed: logInUser,
+                      child: _isLoading != false
+                          ? const Text(
+                              'Sign up',
+                              style:
+                                  TextStyle(fontSize: 19, color: Colors.white),
+                            )
+                          : const CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
                     )
                   ],
                 ),

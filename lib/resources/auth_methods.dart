@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:instagram_clone/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //sign up method
-  Future<String> signupUser(
-      {required String email,
-      required String password,
-      required String username,
-      required String bio,
-      required Uint8List? profilePic}) async {
+  Future<String> signupUser({
+    required String email,
+    required String password,
+    required String username,
+    required String bio,
+    required Uint8List? profilePic,
+  }) async {
     String res = "some error occured";
     try {
       if (email.isNotEmpty ||
@@ -22,6 +24,8 @@ class AuthMethods {
         //register user
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        String imageURL = await StorageMethods()
+            .storeImage('profilePics', profilePic!, false);
         //add user to database
         await _firestore.collection("users").doc(cred.user!.uid).set({
           "username": username,
@@ -30,7 +34,9 @@ class AuthMethods {
           "bio": bio,
           "followers": [],
           "following": [],
+          "photoURL": imageURL,
         });
+
         // await _firestore.collection("users").add({
         //   "username": username,
         //   "uid": cred.user!.uid,
@@ -46,5 +52,22 @@ class AuthMethods {
       res = e.toString();
       return res;
     }
+  }
+
+  Future<String> logInUser(
+      {required String email, required String password}) async {
+    late String res;
+    try {
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+        res = "success";
+      } else {
+        res = 'give all credentials';
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
   }
 }
