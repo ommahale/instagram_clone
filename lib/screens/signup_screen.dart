@@ -53,6 +53,8 @@ class _SignupScreenState extends State<SignupScreen> {
     });
     if (res != 'success') {
       showSnackBar(context, res);
+    } else {
+      Navigator.pop(context);
     }
   }
 

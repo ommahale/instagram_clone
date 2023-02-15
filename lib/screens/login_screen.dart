@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colors.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
@@ -81,17 +82,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 //button login
                 ElevatedButton(
-                  onPressed: () {},
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Log in',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      Icon(Icons.arrow_forward)
-                    ],
-                  ),
+                  // onPressed: () {},
+                  // child: Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: const [
+                  //     Text(
+                  //       'Log in',
+                  //       style: TextStyle(fontSize: 18),
+                  //     ),
+                  //     Icon(Icons.arrow_forward)
+                  //   ],
+                  // ),
+                  onPressed: logInUser,
+                  child: _isLoading == false
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'Log in',
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            Icon(Icons.arrow_forward)
+                          ],
+                        )
+                      : const CircularProgressIndicator(
+                          color: primaryColor,
+                        ),
                 ),
                 const SizedBox(
                   height: 40,
@@ -104,16 +120,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 18),
                     ),
                     TextButton(
-                      onPressed: logInUser,
-                      child: _isLoading != false
-                          ? const Text(
-                              'Sign up',
-                              style:
-                                  TextStyle(fontSize: 19, color: Colors.white),
-                            )
-                          : const CircularProgressIndicator(
-                              color: primaryColor,
-                            ),
+                      child: Text('Sign-up'),
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => SignupScreen())));
+                      },
                     )
                   ],
                 ),
