@@ -7,6 +7,15 @@ import 'package:instagram_clone/resources/storage_methods.dart';
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<UserModel> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+    return UserModel.fromSnap(snap);
+  }
+
   //sign up method
   Future<String> signupUser({
     required String email,
@@ -58,8 +67,10 @@ class AuthMethods {
     }
   }
 
-  Future<String> logInUser(
-      {required String email, required String password}) async {
+  Future<String> logInUser({
+    required String email,
+    required String password,
+  }) async {
     late String res;
     try {
       if (email.isNotEmpty && password.isNotEmpty) {
@@ -73,5 +84,13 @@ class AuthMethods {
       res = e.toString();
     }
     return res;
+  }
+
+  Future signout() async {
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e);
+    }
   }
 }
